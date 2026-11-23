@@ -42,6 +42,12 @@ describe('Unit Tests: Helpers & Utilities (lib.js)', () => {
       const [, ok] = lib.validatePositiveInteger('abc');
       expect(ok).toBe(false);
     });
+
+    test('8. should return true and 0 for string "0"', () => {
+      const [val, ok] = lib.validatePositiveInteger('0');
+      expect(ok).toBe(true);
+      expect(val).toBe(0);
+    });
   });
 
   describe('validateParam', () => {
@@ -146,6 +152,18 @@ describe('Unit Tests: Helpers & Utilities (lib.js)', () => {
       expect(mockModel.destroy).not.toHaveBeenCalled();
 
       config.isDemo = originalIsDemo;
+    });
+  });
+
+  describe('formatArticleSlug', () => {
+    test('should convert title with spaces to lowercase hyphenated slug', () => {
+      const slug = lib.formatArticleSlug('Hello World From HCMUS');
+      expect(slug).toBe('hello-world-from-hcmus');
+    });
+
+    test('should return empty string for falsy input', () => {
+      expect(lib.formatArticleSlug('')).toBe('');
+      expect(lib.formatArticleSlug(null)).toBe('');
     });
   });
 });
