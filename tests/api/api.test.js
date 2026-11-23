@@ -73,7 +73,13 @@ describe('Integration Tests: RealWorld REST API (SuperTest)', () => {
           }
         });
 
+      // Sửa lại thành mã 422 chuẩn RESTful và kiểm tra cấu trúc lỗi JSON
       expect(res.status).toBe(422);
+      expect(res.body.errors).toBeDefined();
+      expect(typeof res.body.errors).toBe('object');
+      expect(res.body.errors).toHaveProperty('email or password');
+      expect(Array.isArray(res.body.errors['email or password'])).toBe(true);
+      expect(res.body.errors['email or password']).toContain('is invalid');
     });
 
     test('GET /api/user - Should return current user when authenticated (200)', async () => {
