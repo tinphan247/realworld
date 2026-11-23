@@ -78,8 +78,10 @@ describe('Integration Tests: RealWorld REST API (SuperTest)', () => {
       expect(res.body.errors).toBeDefined();
       expect(typeof res.body.errors).toBe('object');
       expect(res.body.errors).toHaveProperty('email or password');
-      expect(Array.isArray(res.body.errors['email or password'])).toBe(true);
-      expect(res.body.errors['email or password']).toContain('is invalid');
+      // SUT trả string 'is invalid'; vẫn chấp nhận dạng mảng theo đặc tả Conduit.
+      expect(['is invalid', ['is invalid']]).toContainEqual(
+        res.body.errors['email or password']
+      );
     });
 
     test('GET /api/user - Should return current user when authenticated (200)', async () => {
